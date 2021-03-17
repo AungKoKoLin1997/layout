@@ -1,0 +1,78 @@
+<odoo>
+    <data>
+    <template id="portal.frontend_layout" name="Main Frontend Layout" inherit_id="web.frontend_layout">
+        <xpath expr="//div[@id='wrapwrap']" position="attributes">
+            <attribute name="t-attf-class" add="#{request.env['res.lang']._lang_get(request.env.lang).direction == 'rtl' and 'o_rtl' or ''}" separator=" "/>
+            <attribute name="t-attf-class" add="#{'o_portal' if is_portal else ''}" separator=" "/>
+        </xpath>
+        <xpath expr="//div[@id='wrapwrap']/header/img" position="replace">
+            <nav class="navbar navbar-expand navbar-light bg-light">
+                <div class="container">
+                    <a href="/" class="navbar-brand logo">
+                        <img t-att-src="'/logo.png?company=%s' % res_company.id" t-att-alt="'Logo of %s' % res_company.name" t-att-title="res_company.name"/>
+                    </a>
+                    <ul id="top_menu" class="nav navbar-nav ml-auto">
+                        <t t-call="portal.placeholder_user_sign_in">
+                            <t t-set="_item_class" t-value="'nav-item'"/>
+                            <t t-set="_link_class" t-value="'nav-link'"/>
+                        </t>
+                        <t t-call="portal.user_dropdown">
+                            <t t-set="_user_name" t-value="true"/>
+                            <t t-set="_item_class" t-value="'nav-item dropdown'"/>
+                            <t t-set="_link_class" t-value="'nav-link'"/>
+                            <t t-set="_dropdown_menu_class" t-value="'dropdown-menu-right'"/>
+                        </t>
+                    </ul>
+                </div>
+            </nav>
+        </xpath>
+        <xpath expr="//div[@id='wrapwrap']/main/t[@t-raw='0']" position="before">
+            <div t-if="o_portal_fullwidth_alert" class="alert alert-info alert-dismissible rounded-0 fade show d-print-none css_editable_mode_hidden">
+                <div class="container">
+                    <t t-raw="o_portal_fullwidth_alert"/>
+                </div>
+            </div>
+        </xpath>
+    </template>
+    <template id="portal.portal_docs_entry" name="My Portal Docs Entry">
+        <div class="col-lg-3 col-6">
+          <!-- small box -->
+          <div t-att-class="color_caja" t-att-style="estilo">
+            <div class="inner">
+              <h3><t t-esc="count"/></h3>
+              <p><t t-esc="title"/></p>
+            </div>
+            <div class="icon">
+              <i t-att-class="icono"></i>
+            </div>
+            <a t-att-href="url" class="small-box-footer">More information <i class="fas fa-arrow-circle-right"></i></a>
+          </div>
+        </div>
+      </template>
+      <template id="portal.portal_my_home" name="My Portal">
+                <t t-call="binhex_dashboard_layout.layout">
+                  <style>
+                    .o_portal.container.mt-3{
+                    display:none;
+                    }
+                  </style>
+                  <!-- Content Header (Page header) -->
+                    <div class="container-fluid">
+                      <div class="row mb-2">
+                        <div class="col-sm-6">
+                          <h1 class="m-0 text-dark">My Documents</h1>
+                        </div><!-- /.col -->
+                      </div><!-- /.row -->
+                    </div><!-- /.container-fluid -->
+                  <!-- /.content-header -->
+
+                  <!-- Main content -->
+                    <div class="container-fluid">
+                      <!-- Small boxes (Stat box) -->
+                      <div class="row  o_portal_docs"></div>
+                      <!-- /.row (main row) -->
+                    </div><!-- /.container-fluid -->
+            </t>
+      </template>
+    </data>
+</odoo>
